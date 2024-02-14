@@ -2,5 +2,7 @@ extends layout
 
 block content
   h1 HEEHEE 
+  p This is a line with #[em some emphasis] and #[strong strong text] markup.
+  p This line has an un-escaped string: !{'<em> is emphasized</em>'}, an escaped string: #{'<em> is not emphasized</em>'}, and escaped variables: #{title}.
   p You're so cool 
 

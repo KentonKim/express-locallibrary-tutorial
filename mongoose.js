@@ -8,7 +8,7 @@ Mongoose 7 */
 mongoose.set('strictQuery', false)
 
 // Define db URL to connect to
-const mongoDB = "mongodb://127.0.0.1/my_database"
+const mongoDB = require('./mongoDB.txt') 
 
 // Wait for db to connect, log error if problem
 main().catch((err) => console.log(err))
