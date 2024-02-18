@@ -35,6 +35,29 @@ AuthorSchema.virtual("date_of_death_formatted").get(function () {
 	return this.date_of_death ? DateTime.fromJSDate(this.date_of_death).toLocaleString(DateTime.DATE_MED) : ""
 })
 
+AuthorSchema.virtual("lifespan").get(function () {
+	return `${this.date_of_birth} - ${this.date_of_death}`
+})
+
+const formatDate = (date) => {
+  if (date === null) {
+    return ""
+  }
+
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+}
+
+AuthorSchema.virtual("dob_ymd").get(function () {
+  return formatDate(this.date_of_birth)
+})
+
+AuthorSchema.virtual("dod_ymd").get(function () {
+  return formatDate(this.date_of_death)
+})
+
 
 // Export model
 module.exports = mongoose.model("Author", AuthorSchema);

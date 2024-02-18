@@ -1,0 +1,11 @@
+- minimize 'debug' logging in production
+	use module like debug
+- log website activity with Winston or Bunyan
+- compress HTTP response sent back to client
+	- reduce time req for client to get and load page
+
+- helmet set appropriate HTTP headers to help protect
+	app from web vulnerabilities
+
+add rate limiting to api routes
+	- express rate limit

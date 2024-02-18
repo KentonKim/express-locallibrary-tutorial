@@ -6,15 +6,42 @@ var logger = require('morgan');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
-const catalogRouter = require("./routes/catalog"); //Import routes for "catalog" area of site
 var usersCoolRouter = require('./routes/users/cool')
 
+// compression
+const catalogRouter = require('./routes/catalog') // import routes for 'catalog' area of site
+const compression = require('compression')
+// protect from web vulnerabilities
+const helmet = require('helmet')
+// prevent repeated api calls
+const RateLimit = require('express-rate-limit')
+const limiter = RateLimit({
+  windowMs: 1*60*1000,
+  max: 30
+})
+
 var app = express();
+
+// add helmet to middleware chain
+// set csp headers to allow our bootstrap and jquery to be served
+app.use(
+  helmet.contentSecurityPolicy({
+    directives: {
+      "script-src": ["'self", "code.jquery.com", "cdn.jsdelivr.net"],
+    },
+  })
+)
+app.use(compression())
+
+// apply rate limiter to all requires
+app.use(limiter)
 
 // Set up mongoose connection
 const mongoose = require("mongoose");
 mongoose.set("strictQuery", false);
-const mongoDB = "mongodb+srv://myAtlasDBUser:Bardadmin0!@myatlasclusteredu.xcuyivu.mongodb.net/local_library?retryWrites=true&w=majority"
+const dev_db_url = "mongodb+srv://myAtlasDBUser:Bardadmin0!@myatlasclusteredu.xcuyivu.mongodb.net/local_library?retryWrites=true&w=majority"
+
+const mongoDB = process.env.MONGODB_URI || dev_db_url
 
 main().catch((err) => console.log(err));
 async function main() {
